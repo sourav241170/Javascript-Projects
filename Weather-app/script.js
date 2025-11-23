@@ -6,6 +6,13 @@ const searchBtn= document.querySelector(".search button")
 
 async function checkWeather(city) {
     const response= await fetch(apiUrl + city + `&appid=${apiKey}`);
+    if(response.status==404){
+        document.querySelector(".error").style.display="block";
+        document.querySelector(".weather").style.display="none";
+    }else{
+        document.querySelector(".error").style.display="none";
+    }
+
     const data=await response.json();
 
     document.querySelector(".city").innerHTML=data.name;
@@ -13,9 +20,6 @@ async function checkWeather(city) {
     document.querySelector(".humidity").innerHTML=data.main.humidity + " %";
     document.querySelector(".wind").innerHTML=data.wind.speed + " km/h";
     document.querySelector("#clock").innerHTML = getTimeFromOffset(data.timezone);
-
-
-    console.log(data);
     
 
     if (data.weather[0].main== "Clouds"){
@@ -38,6 +42,7 @@ async function checkWeather(city) {
     }
 
     document.querySelector(".weather").style.display="block";
+    
 }
 
 searchBtn.addEventListener("click", ()=>{
@@ -49,11 +54,10 @@ searchBox.addEventListener("keydown", (e) => {
     }
 });
 
+
 function getTimeFromOffset(offsetInSeconds) {
     const now = new Date();
-
     const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-
     const targetDate = new Date(utcMs + offsetInSeconds * 1000);
 
     return targetDate.toLocaleTimeString("en-US", {

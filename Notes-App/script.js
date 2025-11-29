@@ -1,16 +1,19 @@
-const notesContainer=document.querySelector(".container");
+const notesContainer=document.querySelector(".notes-container");
 const createBtn= document.querySelector(".btn");
 let notes= document.querySelectorAll(".input-box");
 
 // Check local storage for any notes
-function showNotes(){
-    notesContainer.innerHTML= localStorage.getItem("note");
+function showNotes() {
+    const data = localStorage.getItem("notes");
+    if (data) {
+        notesContainer.innerHTML = data;
+    }
 }
 showNotes();
 
 // Update/save data in the local storage with the name "notes"
 function updateStorage(){
-    localStorage.setItem("note", notesContainer.innerHTML);
+    localStorage.setItem("notes", notesContainer.innerHTML);
 }
 
 createBtn.addEventListener("click", ()=>{
